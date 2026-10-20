@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRONO INTELLIGENCE AI</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b0b0f;color:#fff;font-family:Arial,sans-serif}
+header{background:#15151c;padding:22px 15px;text-align:center;border-bottom:2px solid #d4af37}
+header h1{color:#d4af37;font-size:23px;margin:0}
+header p{color:#bbb;font-size:13px}
+.container{padding:16px;max-width:700px;margin:auto}
+.badge{display:inline-block;background:#252116;color:#f3d66b;padding:7px 10px;border-radius:20px;font-size:12px}
+h2{font-size:19px;margin-top:25px}
+.card{background:#17171f;border:1px solid #33333e;border-radius:12px;padding:15px;margin:12px 0}
+.card h3{margin:0 0 10px;color:#f3d66b}
+.muted{color:#aaa;font-size:13px}
+button{background:#d4af37;color:#111;border:0;border-radius:8px;padding:12px;font-weight:bold;width:100%;margin-top:10px}
+input,select{width:100%;padding:12px;border-radius:8px;border:1px solid #444;background:#22222b;color:white;margin-top:8px}
+.result{margin-top:12px;line-height:1.7;color:#eee}
+nav{display:flex;justify-content:space-around;background:#15151c;padding:13px 3px;position:sticky;bottom:0;border-top:1px solid #444}
+nav a{color:#d4af37;text-decoration:none;font-size:12px}
+footer{text-align:center;color:#777;padding:20px;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+<h1>⚽ PRONO INTELLIGENCE AI</h1>
+<p>Analyse sportive et probabilités de matchs</p>
+<span class="badge">VERSION BÊTA</span>
+</header>
+<main class="container">
+<h2>🏆 Tableau de bord</h2>
+<p class="muted">Bienvenue ! Prépare tes analyses sportives.</p><div class="card">
+<h3>🔎 Analyser un match</h3>
+<label for="equipe1">Équipe à domicile</label>
+<input id="equipe1" placeholder="Ex. : Real Madrid">
+<label for="equipe2">Équipe à l'extérieur</label>
+<input id="equipe2" placeholder="Ex. : FC Barcelone">
+<label for="buts1">Moyenne de buts de l'équipe à domicile</label>
+<input id="buts1" type="number" min="0" max="10" step="0.1" placeholder="Ex. : 1.8">
+<label for="buts2">Moyenne de buts de l'équipe à l'extérieur</label>
+<input id="buts2" type="number" min="0" max="10" step="0.1" placeholder="Ex. : 1.2">
+<button onclick="analyser()">LANCER L'ANALYSE</button>
+<div id="resultat" class="result" aria-live="polite"></div>
+</div><h2>📊 Marchés disponibles</h2>
+<div class="card"><h3>⚽ Résultat du match</h3><p class="muted">Victoire domicile, match nul ou victoire extérieure.</p></div>
+<div class="card"><h3>🥅 Total de buts</h3><p class="muted">Étude des moyennes de buts fournies.</p></div>
+<div class="card"><h3>📈 Statistiques</h3><p class="muted">Les résultats dépendent des données saisies. Les données en direct ne sont pas encore connectées.</p></div>
+<footer>Les analyses sont indicatives et ne garantissent aucun résultat.</footer>
+</main>
+<nav>
+<a href="#">Accueil</a>
+<a href="#equipe1">Analyse</a>
+<a href="#resultat">Résultats</a>
+</nav>
+<script>
+function analyser(){
+ const e1=document.getElementById('equipe1').value.trim();
+ const e2=document.getElementById('equipe2').value.trim();
+ const b1=parseFloat(document.getElementById('buts1').value);
+ const b2=parseFloat(document.getElementById('buts2').value);
+ const r=document.getElementById('resultat');
+ if(!e1||!e2||e1.toLowerCase()===e2.toLowerCase()){
+  r.textContent="Entre deux équipes différentes pour continuer.";return;
+ }
+ if(!Number.isFinite(b1)||!Number.isFinite(b2)||b1<0||b2<0||b1>10||b2>10){
+  r.textContent="Saisis deux moyennes de buts valides, comprises entre 0 et 10.";return;
+ }
+ const total=b1+b2;
+ let tendance;
+ if(b1>b2+0.35)tendance="Avantage statistique à "+e1;
+ else if(b2>b1+0.35)tendance="Avantage statistique à "+e2;
+ else tendance="Les moyennes sont proches";
+ r.innerHTML="<strong>Analyse indicative</strong><br>"+e1+" : "+b1.toFixed(1)+" but(s) moyen(s)<br>"+e2+" : "+b2.toFixed(1)+" but(s) moyen(s)<br>Total moyen estimé : "+total.toFixed(1)+" but(s)<br><strong>"+tendance+"</strong><br><small>Cette comparaison est simplifiée et ne constitue pas une prédiction fiable à elle seule.</small>";
+}
+</script>
+</body>
+</html>
